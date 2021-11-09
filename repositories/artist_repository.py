@@ -1,7 +1,7 @@
 from db.run_sql import run_sql
-
 from models.album import Album
 from models.artist import Artist
+import album_repository as album_repository
 
 # CREATE
 def save(artist):
@@ -33,7 +33,7 @@ def select(id):
         artist = Artist(result['name'], result['id'])
     return artist
 
-# UPDATE
+# UPDATE (EXTENSION)
 def update(artist):
     sql = "UPDATE artists SET (name) = (%s) WHERE id = %s"
     values = [artist.name, artist.id]
@@ -48,3 +48,15 @@ def delete(id):
     sql = "DELETE FROM artists WHERE id = %s"
     values = [id]
     run_sql(sql, values)
+    
+# EXTENSIONS
+def albums(artist):
+    album_list = []
+    sql = "SELECT * FROM albums WHERE artist_id = %s"
+    values = [artist.id]
+    results = run_sql(sql, values)
+    
+    for row in results:
+        album = Album(row['title'], row['genre'], artist, row['id'])
+        album_list.append(album)
+    return album_list

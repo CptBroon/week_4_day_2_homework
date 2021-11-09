@@ -35,7 +35,7 @@ def select(id):
         album = Album(result['title'], result['genre'], artist, result['id'])
     return album
 
-# UPDATE
+# UPDATE (EXTENSION)
 def update(album):
     sql = "UPDATE albums SET (title, genre, artist_id) = (%s, %s, %s) WHERE id = %s"
     values = [album.title, album.genre, album.artist.id, album.id]
